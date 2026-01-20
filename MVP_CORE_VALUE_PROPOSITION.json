@@ -1,0 +1,27 @@
+{
+  "product_name": "AssetFlow AI",
+  "target_audience": "Freelance Graphic & UI/UX Designers",
+  "core_value_proposition": "Recover 5 hours per week by finding any asset in under 5 seconds.",
+  "mvp_features": [
+    {
+      "feature": "Local Indexer",
+      "benefit": "Maps local drives and cloud folders (Dropbox/GDrive) into a unified view without moving files."
+    },
+    {
+      "feature": "AI Auto-Tagging",
+      "benefit": "Uses computer vision to tag images (e.g., 'minimalist', 'blue', 'portrait') automatically."
+    },
+    {
+      "feature": "Smart Search Bar",
+      "benefit": "Natural language processing to find 'that logo I made for the coffee shop last year'."
+    },
+    {
+      "feature": "Visual Preview Bridge",
+      "benefit": "Instant high-res previews for .psd, .ai, and .fig files without opening heavy software."
+    }
+  ],
+  "success_metrics": {
+    "ttr": "Time to Retrieve (Goal: < 5s)",
+    "dau_stickiness": "Daily Active Usage for asset fetching"
+  }
+}
