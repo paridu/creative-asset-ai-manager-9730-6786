@@ -1,0 +1,23 @@
+{
+  "ingestion_states": {
+    "IDLE": "Waiting for input. Minimalist drop-zone visible.",
+    "SCANNING": "Reading file headers. Progress bar at 10%.",
+    "THINKING": "AI Vectorization in progress. Pulse animation active.",
+    "SUCCESS": "Checkmark shown. Summary: '3 assets added with 12 tags'.",
+    "ERROR": "Invalid format or corrupt file notification."
+  },
+  "search_modes": {
+    "KEYWORD": "Standard filename and explicit tag matching.",
+    "SEMANTIC": "Concept-based search (e.g., searching 'Summer' finds yellow/bright images).",
+    "VISUAL_SIMILARITY": "Finding assets based on the visual composition of a source image.",
+    "COLOR_FILTER": "Filtering results by a specific hex code or palette."
+  },
+  "asset_metadata_schema": {
+    "internal_id": "UUID",
+    "original_path": "String",
+    "semantic_tags": "Array<String>",
+    "dominant_palette": "Array<HexCodes>",
+    "vector_embedding": "Float64Array",
+    "last_used_in": "ProjectID"
+  }
+}
