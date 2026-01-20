@@ -1,0 +1,17 @@
+graph TD
+    A[User Asset Input] -->|Drag & Drop / Folder Watch| B{File Type Detector}
+    B -->|Image/Vector| C[Visual Analysis Engine]
+    B -->|Font/Doc| D[Textual/Metadata Extraction]
+    
+    subgraph AI Processing Layer
+    C --> C1[Color Palette Extraction]
+    C --> C2[Object/Concept Tagging]
+    C --> C3[Vector Embedding Generation]
+    D --> D1[OCR / Font Family Detection]
+    D --> D2[Contextual Keyword Extraction]
+    end
+    
+    C1 & C2 & C3 & D1 & D2 --> E[Vector Database Indexing]
+    E --> F[Instant Notification: Asset Ready]
+    
+    style AI Processing Layer fill:#f9f,stroke:#333,stroke-width:2px
