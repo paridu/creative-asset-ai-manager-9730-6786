@@ -1,28 +1,14 @@
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from .api.routes import assets
+from .api import search_router
 
-app = FastAPI(
-    title="OVERLORD API",
-    description="Backend services for Freelance Digital Asset Management",
-    version="0.1.0"
-)
-
-# Configure CORS for local development (Designer UI)
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+app = FastAPI(title="OVERLORD AI Agent Backend")
 
 # Include Routers
-app.include_router(assets.router)
+app.include_router(search_router.router)
 
 @app.get("/health")
-async def health_check():
-    return {"status": "healthy", "service": "overlord-api"}
+def health_check():
+    return {"status": "operational", "agent": "ready"}
 
 if __name__ == "__main__":
     import uvicorn
