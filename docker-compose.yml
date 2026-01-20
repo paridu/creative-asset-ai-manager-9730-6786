@@ -2,49 +2,60 @@ version: '3.8'
 
 services:
   db:
-    image: ankane/pgvector:latest # Postgres with PGVector
+    image: ankane/pgvector:latest
     environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: overlord
-    ports:
-      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d overlord"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   redis:
     image: redis:7-alpine
-    ports:
-      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
 
   minio:
     image: minio/minio
-    ports:
-      - "9000:9000"
-      - "9001:9001"
     environment:
-      MINIO_ROOT_USER: minioadmin
-      MINIO_ROOT_PASSWORD: minioadmin
+      MINIO_ROOT_USER: ${MINIO_ADMIN}
+      MINIO_ROOT_PASSWORD: ${MINIO_PASSWORD}
     command: server /data --console-address ":9001"
+    volumes:
+      - miniodata:/data
 
   api:
-    build: .
-    command: uvicorn src.main:app --host 0.0.0.0 --port 8000 --reload
-    volumes:
-      - .:/app
+    image: ${DOCKERHUB_USERNAME}/overlord-api:latest
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    env_file: .env
     ports:
       - "8000:8000"
-    env_file:
-      - .env
-    depends_on:
-      - db
-      - redis
 
-  worker:
-    build: .
-    command: celery -A src.worker.celery_app worker --loglevel=info -Q asset_processing
-    volumes:
-      - .:/app
-    env_file:
-      - .env
+  vision-worker:
+    image: ${DOCKERHUB_USERNAME}/overlord-vision:latest
     depends_on:
-      - redis
-      - api
+      redis:
+        condition: service_healthy
+    env_file: .env
+    volumes:
+      - ./models:/root/.cache/huggingface # Cache AI models
+
+  frontend:
+    image: ${DOCKERHUB_USERNAME}/overlord-ui:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://api:8000
+
+volumes:
+  pgdata:
+  miniodata:
