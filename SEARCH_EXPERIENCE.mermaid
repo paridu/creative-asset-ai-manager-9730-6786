@@ -1,0 +1,18 @@
+sequenceDiagram
+    participant User
+    participant UI as Search Interface
+    participant AI as Semantic Engine
+    participant DB as Vector Store
+
+    User->>UI: Types "Professional yet moody blue textures"
+    UI->>AI: Convert text to Query Vector
+    AI->>DB: Calculate Similarity Score (Cosine)
+    DB-->>AI: Return Top 50 Asset IDs
+    AI->>UI: Render Visual Grid (Sorted by Relevancy)
+    
+    Note over User, UI: User hovers over an asset
+    UI->>User: Display Smart Meta (Resolution, Dominant Colors)
+    
+    User->>UI: Clicks "Find Similar"
+    UI->>AI: Vector Search based on Asset ID
+    AI-->>UI: Update Grid with Visual Lookalikes
